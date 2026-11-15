@@ -1,0 +1,34 @@
+Categories:
+  - Time
+License: GPL-3.0-or-later
+WebSite: https://github.com/g10112/meds-timer
+SourceCode: https://github.com/g10112/meds-timer
+IssueTracker: https://github.com/g10112/meds-timer/issues
+Changelog: https://github.com/g10112/meds-timer/releases
+
+AutoName: Meds Timer
+Summary: Offline medication reminder alarms
+Description: |-
+  Meds Timer schedules three configurable medication reminder alarms after you press Start.
+  It uses Android alarms and shows the remaining reminders on your phone and home-screen widgets.
+  It works offline without ads, accounts, tracking or subscription payments.
+
+  This is a reminder tool, not medical advice, a medical device or a dose tracker.
+  Use your prescribed intervals and a backup alert for time-critical medication.
+
+RepoType: git
+Repo: https://github.com/g10112/meds-timer.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 1
+    commit: v1.0.0
+    subdir: app
+    gradle:
+      - yes
+    prebuild: sed -i '/signingConfig = signingConfigs.getByName("medsRelease")/d' build.gradle.kts
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1

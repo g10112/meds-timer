@@ -6,6 +6,10 @@ Set three reminders, press Start, and your phone will alert you when each one is
 
 **[Download Meds Timer](https://github.com/g10112/meds-timer/releases/latest)** · Android 14 or newer
 
+**Prefer automatic update checks?** Install [Obtainium](https://obtainium.imranr.dev/) and add `https://github.com/g10112/meds-timer` as a GitHub source. It tracks official signed APK releases. [Quick instructions](docs/INSTALL_AND_UPDATES.md).
+
+**Available now:** GitHub Releases and GitHub-based updates through Obtainium. F-Droid and Google Play listings are being prepared; they are not published yet.
+
 ## How it works
 
 1. Install the APK from the latest official GitHub release.
@@ -15,7 +19,7 @@ Set three reminders, press Start, and your phone will alert you when each one is
 
 The default reminders are **3 hours 30 minutes, 7 hours and 10 hours 30 minutes after Start**. You can change them to suit your prescribed timings. There are also four home-screen widgets and an optional alarm sound picker.
 
-For screenshots, setup and common questions, see the **[user guide](docs/USER_GUIDE.md)**.
+For setup and common questions, see the **[user guide](docs/USER_GUIDE.md)**.
 
 ## What you should know
 

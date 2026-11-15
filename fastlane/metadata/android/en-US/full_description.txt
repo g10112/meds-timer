@@ -1,18 +1,20 @@
-Meds Timer is a free, private, open-source Android reminder utility.
+Meds Timer is a simple, free medication reminder app for Android.
 
-Press Start to schedule three reminder alarms from that moment. The defaults are 3 hours 30 minutes, 7 hours and 10 hours 30 minutes. You can change the three intervals in the app if your prescribed schedule requires different times.
+Set three reminder intervals after you press Start. The default times are 3 hours 30 minutes, 7 hours and 10 hours 30 minutes, and you can change them to match your prescribed schedule.
 
 Features:
-- Works offline without accounts or network access.
-- No advertisements, subscriptions, tracking or paid features.
-- Four home-screen widget sizes.
-- Choose an alarm sound and use a ten-second test alarm.
-- Confirmation before cancelling remaining alarms.
-- Saves timing settings locally.
-- Attempts to restore remaining alarms after a phone restart.
+- Three configurable reminder alarms
+- Four home-screen widget sizes
+- Sound and vibration, with a selectable alarm tone
+- Confirmation before cancelling the remaining alarms
+- Restores future alarms after a phone restart and warns about missed reminders
+- Local settings, offline operation
 
-Requires Android 14 or newer.
+No advertisements, payments, subscriptions, tracking or account creation. The app is open source under GPL-3.0-or-later.
 
-Important: Meds Timer is a reminder utility, not medical advice, a dosage tracker, or a medical device. Follow professional instructions, check phone alarm permissions and use a trusted backup reminder for time-critical medication. Mobile operating systems can delay or suppress alarms.
+Android 14 or newer. Some phone settings and system restrictions may interrupt alarms, so check permissions and use a backup for time-critical medicines.
 
-Source and licence: GPL-3.0-or-later.
+IMPORTANT: This app is not a medical device and does not diagnose, treat, cure, or prevent any medical condition. It is not a dose tracker and does not tell you which medication to take. Always follow your prescribed schedule and consult a healthcare professional for medical advice, diagnosis or treatment. Never double up a dose solely because a reminder was missed.
+
+Source code and support: https://github.com/g10112/meds-timer
+Privacy policy: https://github.com/g10112/meds-timer/blob/main/docs/PRIVACY.md
