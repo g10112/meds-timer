@@ -2,7 +2,7 @@
 
 **Status: listing copy prepared. Not submitted to Google Play.**
 
-The Android App Bundle (`.aab`) was built in the [v1.0.0 release workflow](https://github.com/g10112/meds-timer/actions/runs/43770760454) and kept as a workflow artifact. Download the signed bundle before the workflow artifact expires.
+The released v1.0.0 App Bundle is **not yet suitable for Google Play submission** because the shipped app lacks an in-app privacy screen. The main branch now has that screen and version **1.0.1** (not released yet). After real-device verification, publish a new signed v1.0.1 release and use its App Bundle for Play.
 
 ## Listing
 
@@ -27,7 +27,7 @@ The Android App Bundle (`.aab`) was built in the [v1.0.0 release workflow](https
 - The Health apps declaration should identify **Medication and Treatment Management**. Do not choose “no health features.”
 - Include the precise disclaimer: **This app is not a medical device and does not diagnose, treat, cure, or prevent any medical condition. Consult a healthcare professional for medical advice.**
 - Complete the Data safety disclosure accurately after inspecting the final bundle. The app's source has no internet permission, analytics, ads or account services; check your declaration against the released APK.
-- Privacy policy must be publicly accessible and **available within the app**. The shipped v1.0.0 APK lacks an in-app privacy page. The `play-store-privacy-readiness` branch adds an offline Privacy & safety screen for planned v1.0.1. This updated version still needs a real-device check and a new signed release before submitting to Play.
+- Privacy policy must be publicly accessible and **available within the app**. The shipped v1.0.0 APK lacks an in-app privacy page. The **main branch** now includes an offline Privacy & safety screen for v1.0.1. It passed automated CI, but still needs a real-device check and a new signed release before submitting to Play.
 - Check exact-alarm and full-screen intent declarations, target SDK, content ratings and device compatibility in the Play Console.
 - If using a new personal Play developer account created after 13 November 2023, Google requires a closed test with **12 opted-in testers for at least 14 continuous days**, followed by a production-access application.
 - **Signing:** Google Play App Signing may use a different app-signing certificate from GitHub. Do not assume updates can be installed across stores.
