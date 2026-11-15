@@ -1,0 +1,1 @@
+Adds an in-app privacy and safety page, accessible offline. No changes to reminder scheduling.

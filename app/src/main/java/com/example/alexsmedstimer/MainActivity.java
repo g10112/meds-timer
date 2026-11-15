@@ -236,6 +236,10 @@ public class MainActivity extends Activity {
         fullScreenButton.setOnClickListener(v -> openFullScreenIntentSettings());
         content.addView(fullScreenButton, Ui.fullWidth(this, 12));
 
+        Button privacyButton = Ui.button(this, "PRIVACY & SAFETY", Ui.CARD, Ui.TEXT);
+        privacyButton.setOnClickListener(v -> showPrivacyAndSafety());
+        content.addView(privacyButton, Ui.fullWidth(this, 12));
+
         TextView footer = Ui.text(
                 this,
                 "Remaining alarms are restored after a phone restart. Cancelling a session always requires confirmation.",
@@ -546,6 +550,33 @@ public class MainActivity extends Activity {
             Toast.makeText(this, "Alarm sound changed.", Toast.LENGTH_SHORT).show();
             refreshUi();
         }
+    }
+
+    /** Public, offline privacy information, accessible without an account or browser. */
+    private void showPrivacyAndSafety() {
+        String info = "Meds Timer works entirely offline. No account is needed. "
+                + "The app has no ads, subscriptions, analytics or tracking. "
+                + "It does not collect medication names, prescriptions, contact details, "
+                + "location or other personal information. No data is shared with anyone.\n\n"
+                + "Your reminder intervals, alarm sound and current session are stored "
+                + "only on this phone. Android backup of those settings is disabled. "
+                + "Uninstalling the app removes its locally stored settings.\n\n"
+                + "Permissions are used only to schedule and show medication reminder "
+                + "alarms: notifications, exact alarms, full-screen alerts, vibration, "
+                + "wake locks and restart recovery. Phone settings can prevent an "
+                + "alarm from ringing.\n\n"
+                + "Meds Timer is a reminder, not a dose tracker. This app is not a "
+                + "medical device and does not diagnose, treat, cure or prevent any "
+                + "medical condition. Follow your prescribed schedule, keep a "
+                + "backup reminder for time-critical doses and consult a healthcare "
+                + "professional for medical advice. Never double up a dose because "
+                + "a reminder was missed.\n\n"
+                + "Open source: github.com/g10112/meds-timer";
+        new AlertDialog.Builder(this)
+                .setTitle("Privacy & safety")
+                .setMessage(info)
+                .setPositiveButton("Close", null)
+                .show();
     }
 
     private void requestWidgetPin() {
