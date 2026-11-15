@@ -1,0 +1,115 @@
+name: Publish Meds Timer
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Version in app/build.gradle.kts, e.g. v1.0.0'
+        required: true
+        default: 'v1.0.0'
+        type: string
+      device_tests_passed:
+        description: 'I have checked the release on a real Android phone'
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: ${{ inputs.device_tests_passed }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get source
+        uses: actions/checkout@v4
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Android SDK 36
+        run: |
+          SDKMANAGER="$(command -v sdkmanager || find "$ANDROID_HOME/cmdline-tools" -name sdkmanager | head -n 1)"
+          "$SDKMANAGER" "platforms;android-36" "build-tools;35.0.0"
+      - name: Set up Gradle 8.13
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Check version and signing configuration
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+          KEYSTORE: ${{ secrets.MEDS_RELEASE_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.MEDS_RELEASE_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.MEDS_RELEASE_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.MEDS_RELEASE_KEY_PASSWORD }}
+        run: |
+          VERSION="$(sed -nE 's/^[[:space:]]*versionName = "([^"]+)".*/\1/p' app/build.gradle.kts | head -n 1)"
+          test -n "$VERSION" && test "$TAG" = "v$VERSION" || {
+            echo "::error::Tag must match Android versionName v$VERSION"
+            exit 1
+          }
+          test -n "$KEYSTORE" && test -n "$STORE_PASSWORD" && test -n "$KEY_ALIAS" && test -n "$KEY_PASSWORD" || {
+            echo "::error::Set all four MEDS_RELEASE_* GitHub Actions secrets before publishing."
+            exit 1
+          }
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "::error::This version already has a release. Increment versionCode and versionName."
+            exit 1
+          fi
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" >/dev/null 2>&1; then
+            echo "::error::This version tag already exists. Do not overwrite a release tag."
+            exit 1
+          fi
+      - name: Restore permanent signing key
+        env:
+          KEYSTORE: ${{ secrets.MEDS_RELEASE_KEYSTORE_BASE64 }}
+        run: |
+          umask 077
+          printf '%s' "$KEYSTORE" | base64 --decode > "$RUNNER_TEMP/meds-release.jks"
+          echo "MEDS_RELEASE_KEYSTORE=$RUNNER_TEMP/meds-release.jks" >> "$GITHUB_ENV"
+      - name: Test and build signed Android APK and App Bundle
+        env:
+          MEDS_RELEASE_STORE_PASSWORD: ${{ secrets.MEDS_RELEASE_STORE_PASSWORD }}
+          MEDS_RELEASE_KEY_ALIAS: ${{ secrets.MEDS_RELEASE_KEY_ALIAS }}
+          MEDS_RELEASE_KEY_PASSWORD: ${{ secrets.MEDS_RELEASE_KEY_PASSWORD }}
+        run: gradle --no-daemon :app:testDebugUnitTest :app:lintRelease :app:assembleRelease :app:bundleRelease
+      - name: Check APK identity, signature and release checksum
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          APK="app/build/outputs/apk/release/app-release.apk"
+          AAB="app/build/outputs/bundle/release/app-release.aab"
+          test -s "$APK" && test -s "$AAB"
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$APK"
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK" > "$RUNNER_TEMP/app-badging.txt"
+          grep -q "package: name='io.github.g10112.medstimer'" "$RUNNER_TEMP/app-badging.txt"
+          grep -q "targetSdkVersion:'36'" "$RUNNER_TEMP/app-badging.txt"
+          mkdir -p dist
+          cp "$APK" "dist/MedsTimer.apk"
+          cp "$AAB" "dist/MedsTimer.aab"
+          (cd dist && sha256sum MedsTimer.apk > SHA256SUMS.txt && sha256sum -c SHA256SUMS.txt && sha256sum MedsTimer.aab > BUNDLE_SHA256SUMS.txt)
+      - name: Keep the signed App Bundle for store submission
+        uses: actions/upload-artifact@v4
+        with:
+          name: MedsTimer-PlayStore-bundle
+          path: |
+            dist/MedsTimer.aab
+            dist/BUNDLE_SHA256SUMS.txt
+          retention-days: 90
+          if-no-files-found: error
+      - name: Publish official release (APK + checksum)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          gh release create "$TAG" \
+            "dist/MedsTimer.apk#MedsTimer.apk" \
+            "dist/SHA256SUMS.txt#SHA256SUMS.txt" \
+            --target "$GITHUB_SHA" \
+            --title "Meds Timer $TAG" \
+            --notes-file .github/SIGNED_RELEASE_NOTES.md \
+            --latest

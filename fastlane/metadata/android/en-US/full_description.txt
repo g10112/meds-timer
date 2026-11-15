@@ -1,0 +1,18 @@
+Meds Timer is a free, private, open-source Android reminder utility.
+
+Press Start to schedule three reminder alarms from that moment. The defaults are 3 hours 30 minutes, 7 hours and 10 hours 30 minutes. You can change the three intervals in the app if your prescribed schedule requires different times.
+
+Features:
+- Works offline without accounts or network access.
+- No advertisements, subscriptions, tracking or paid features.
+- Four home-screen widget sizes.
+- Choose an alarm sound and use a ten-second test alarm.
+- Confirmation before cancelling remaining alarms.
+- Saves timing settings locally.
+- Attempts to restore remaining alarms after a phone restart.
+
+Requires Android 14 or newer.
+
+Important: Meds Timer is a reminder utility, not medical advice, a dosage tracker, or a medical device. Follow professional instructions, check phone alarm permissions and use a trusted backup reminder for time-critical medication. Mobile operating systems can delay or suppress alarms.
+
+Source and licence: GPL-3.0-or-later.

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="meds_icon_background">#0B1020</color>
+    <color name="widget_background">#141821</color>
+    <color name="widget_border">#364052</color>
+    <color name="widget_text">#F5F7FB</color>
+    <color name="widget_muted">#AEB7C6</color>
+    <color name="widget_accent">#8BE9FD</color>
+</resources>

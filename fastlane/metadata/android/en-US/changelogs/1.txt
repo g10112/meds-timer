@@ -1,0 +1,1 @@
+Initial public release: configurable three-alarm session timer, exact alarm scheduling, home-screen widgets, local settings, alarm sound selection and reboot restoration.
